@@ -9,9 +9,9 @@ class $modify(PlayerObject) {
 public:
 
 // Click sounds
-	bool pushButton(PlayerButton p0) {
-		bool ret = PlayerObject::pushButton(p0);
-    return ret;
+	void pushButton(PlayerButton p0) {
+		PlayerObject::pushButton(p0);
+    return;
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
