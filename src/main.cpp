@@ -24,6 +24,7 @@ public:
     log::debug("CSLite: Player jumped.");
 
     auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+    auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-presssound");
 
     // Play click sound
     FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
