@@ -49,7 +49,7 @@ public:
 
     log::debug("CSLite: Player jumped.");
 
-    auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string()
+    auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
 
     if (Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string() == "Select a file") {
       releaseSoundFile = "default-release.ogg"_spr;
