@@ -19,12 +19,12 @@ public:
     	}
     }
 
-    if (!GameManager::sharedState()->getPlayLayer())
-      return;
+  if (!GameManager::sharedState()->getPlayLayer())
+    return;
 
-    geode::log << "Pushed Player Jump (CSLite)";
+  log::debug("CSLite: Player jumped.");
 
-	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+	// auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
     // Play click sound
     FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
