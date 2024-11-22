@@ -10,7 +10,8 @@ public:
 
 // Click sounds
 	bool pushButton(PlayerButton p0) {
-		return PlayerObject::pushButton(p0);
+		bool ret = PlayerObject::pushButton(p0);
+    return ret;
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
@@ -26,11 +27,11 @@ public:
 	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(default-click.ogg_spr);
+    FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
   }
 
 // Release sounds
-
+/*
   bool releaseButton(PlayerButton p0) {
     return PlayerObject::releaseButton(p0);
 
@@ -48,4 +49,5 @@ public:
     // Play release sound
     FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
   }
+*/
 };
