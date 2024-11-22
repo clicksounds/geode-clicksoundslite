@@ -15,7 +15,7 @@ public:
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
-    		return;
+    		return ret;
     	}
     }
 
