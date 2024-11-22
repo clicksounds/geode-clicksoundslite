@@ -28,7 +28,7 @@
 		"custom-presssound": {
 			"name": "Click Sound File",
 			"type": "file",
-			"default": "resources/default-click.ogg",
+			"default": "{mod_save_dir}/default-click.ogg",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
@@ -44,7 +44,7 @@
 		"custom-releasesound": {
 			"name": "Click Sound File",
 			"type": "file",
-			"default": "resources/default-click.ogg",
+			"default": "{mod_save_dir}/default-click.ogg",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
