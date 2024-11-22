@@ -21,10 +21,10 @@ public:
     if (!GameManager::sharedState()->getPlayLayer())
       return;
 
-	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound");
+	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile, 1, 1, 1);
+    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
   }
 
 // Release sounds
@@ -41,9 +41,9 @@ public:
     if (!GameManager::sharedState()->getPlayLayer())
       return;
 
-	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound");
+	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
 
     // Play release sound
-    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile, 1, 1, 1);
+    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
   }
 };
