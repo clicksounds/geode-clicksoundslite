@@ -23,10 +23,10 @@ public:
 
     log::debug("CSLite: Player jumped.");
 
-	  if (Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string() != "Select a file") {
-      auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
-    } else {
-      auto clickSoundFile = "default-click.ogg"_spr;
+    auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+
+	  if (Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string() == "Select a file") {
+      clickSoundFile = "default-click.ogg"_spr;
     }
 
     // Play click sound
@@ -49,10 +49,10 @@ public:
 
     log::debug("CSLite: Player jumped.");
 
-    if (Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string() != "Select a file") {
-      auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
-    } else {
-      auto releaseSoundFile = "default-release.ogg"_spr;
+    auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string()
+
+    if (Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string() == "Select a file") {
+      releaseSoundFile = "default-release.ogg"_spr;
     }
 
     // Play click sound
