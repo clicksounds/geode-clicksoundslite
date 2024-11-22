@@ -21,10 +21,8 @@ public:
     if (!GameManager::sharedState()->getPlayLayer())
       return ret;
 
-    log::debug("CSLite: Player jumped.");
-
     auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
-    auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksound");
+    auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
 
     // Play click sound
     if (isClickEnabled)
@@ -45,8 +43,6 @@ public:
 
     if (!GameManager::sharedState()->getPlayLayer())
       return ret;
-
-    log::debug("CSLite: Player jumped.");
 
     auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
     auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
