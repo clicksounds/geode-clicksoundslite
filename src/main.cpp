@@ -24,10 +24,12 @@ public:
     log::debug("CSLite: Player jumped.");
 
     auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
-    auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-presssound");
+    auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksound");
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
+    if (isClickEnabled)
+        FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
+    
     return ret;
   }
 
@@ -47,9 +49,12 @@ public:
     log::debug("CSLite: Player jumped.");
 
     auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+    auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
+    if (isReleaseEnabled)
+        FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
+    
     return ret;
   }
 };
