@@ -1,1 +1,1 @@
-Edit this file to change your mod's support info, or delete it if you don't need it.
+Join the [discord server](https://discord.gg/RwbRP8ADdc) for limited support.

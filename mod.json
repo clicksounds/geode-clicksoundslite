@@ -28,7 +28,7 @@
 		"custom-presssound": {
 			"name": "Click Sound File",
 			"type": "file",
-			"default": "{gd_dir}/geode/unzipped/beat.click_sounds_lite/resources/beat.click_sounds_lite/default-click.ogg",
+			"default": "Select a file",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
@@ -42,9 +42,9 @@
 			"default": false
 		},
 		"custom-releasesound": {
-			"name": "Click Sound File",
+			"name": "Release Sound File",
 			"type": "file",
-			"default": "{gd_dir}/geode/unzipped/beat.click_sounds_lite/resources/beat.click_sounds_lite/default-release.ogg",
+			"default": "Select a file",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
