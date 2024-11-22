@@ -9,9 +9,9 @@ class $modify(PlayerObject) {
 public:
 
 // Click sounds
-	void pushButton(PlayerButton p0) {
-		PlayerObject::pushButton(p0);
-    return;
+	bool pushButton(PlayerButton p0) {
+		bool ret = PlayerObject::pushButton(p0);
+    return ret;
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
@@ -20,7 +20,7 @@ public:
     }
 
   if (!GameManager::sharedState()->getPlayLayer())
-    return;
+    return ret;
 
   log::debug("CSLite: Player jumped.");
 
