@@ -10,7 +10,7 @@ public:
 
 // Click sounds
 	bool pushButton(PlayerButton p0) {
-		PlayerObject::pushButton(p0);
+		return PlayerObject::pushButton(p0);
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
@@ -32,7 +32,7 @@ public:
 // Release sounds
 
   bool releaseButton(PlayerButton p0) {
-    PlayerObject::releaseButton(p0);
+    return PlayerObject::releaseButton(p0);
 
   if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
       if (p0 != PlayerButton::Jump) {
