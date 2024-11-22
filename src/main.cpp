@@ -1,5 +1,6 @@
 #include <Geode/Geode.hpp>
 #include <Geode/modify/PlayerObject.hpp>
+#include <Geode/binding/FMODAudioEngine.hpp>
 
 using namespace geode::prelude;
 
@@ -20,10 +21,10 @@ public:
     if (!GameManager::sharedState()->getPlayLayer())
       return;
 
-	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound");
+	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").toString();
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
+    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile, 1, 1, 1);
   }
 
 // Release sounds
@@ -40,9 +41,9 @@ public:
     if (!GameManager::sharedState()->getPlayLayer())
       return;
 
-	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound");
+	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").toString();
 
     // Play release sound
-    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
+    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile, 1, 1, 1);
   }
 };
