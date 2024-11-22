@@ -20,6 +20,10 @@
 		]
 	},
 	"settings": {
+		"volume-warning": {
+			"name": "CS Lite uses GD's built in SFX volume slider",
+			"type": "title"
+		},
 		"enable-clicksounds": {
 			"name": "Enable Click Sounds",
 			"type": "bool",
