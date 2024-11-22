@@ -1,0 +1,57 @@
+{
+	"geode": "4.0.1",
+	"gd": "2.2074",
+	"version": "v1.0.0",
+	"id": "beat.click_sounds_lite",
+	"name": "Click Sounds Lite",
+	"developer": "Beat",
+	"description": "A lighter version of click sounds",
+	"resources": {
+		"files": [
+			"resources/**/*.ogg",
+			"resources/**/*.mp3",
+			"resources/**/*.wav",
+			"resources/**/*.m4a"
+		]
+	},
+	"settings": {
+		"enable-clicksounds": {
+			"name": "Enable Click Sounds",
+			"type": "bool",
+			"default": true
+		},
+		"custom-presssound": {
+			"name": "Click Sound File",
+			"type": "file",
+			"default": "resources/default-click.ogg",
+			"control": {
+				"filters": [
+					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
+				 	"description": "Audio file"}
+				]
+			}
+		},
+		"enable-releasesounds": {
+			"name": "Enable Release Sounds",
+			"type": "bool",
+			"default": false
+		},
+		"custom-releasesound": {
+			"name": "Click Sound File",
+			"type": "file",
+			"default": "Select a file",
+			"control": {
+				"filters": [
+					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
+				 	"description": "Audio file"}
+				]
+			}
+		},
+		"OnlyOnJump": {
+			"name": "Only play on jump",
+			"description": "Doesn't play sound on movement of platformer keys",
+			"type": "bool",
+			"default": true
+		}
+	}
+}
