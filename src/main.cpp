@@ -22,7 +22,7 @@ public:
       return;
   
   // debug
-  std::cout << "CSLite Debug: Player Jump"
+  std::cout << "CSLite Debug: Player Jump";
 
 	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
