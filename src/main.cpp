@@ -7,10 +7,6 @@ class $modify(PlayerObject) {
 
 public:
 
-// Get user determined click sound files
-    auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound");
-	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound");
-	
 // Click sounds
 	void pushButton(PlayerButton p0) {
 		PlayerObject::pushButton(p0);
@@ -23,6 +19,8 @@ public:
 
     if (!GameManager::sharedState()->getPlayLayer())
       return;
+
+	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound");
 
     // Play click sound
     FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile_spr);
@@ -41,6 +39,8 @@ public:
 
     if (!GameManager::sharedState()->getPlayLayer())
       return;
+
+	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound");
 
     // Play release sound
     FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile_spr);
