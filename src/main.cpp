@@ -11,8 +11,6 @@ public:
 // Click sounds
 	bool pushButton(PlayerButton p0) {
 		bool ret = PlayerObject::pushButton(p0);
-    if(!MenuLayer::init())
-      return false;
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
