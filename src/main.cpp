@@ -24,7 +24,7 @@ public:
 	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(default-click.ogg_spr);
+    FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
   }
 
 // Release sounds
