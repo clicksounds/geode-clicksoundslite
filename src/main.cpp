@@ -9,7 +9,7 @@ class $modify(PlayerObject) {
 public:
 
 // Click sounds
-	void pushButton(PlayerButton p0) {
+	bool pushButton(PlayerButton p0) {
 		PlayerObject::pushButton(p0);
 
 	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
@@ -20,19 +20,18 @@ public:
 
     if (!GameManager::sharedState()->getPlayLayer())
       return;
-  
-  // debug
-  std::cout << "CSLite Debug: Player Jump";
+
+    geode::log << "Pushed Player Jump (CSLite)";
 
 	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
+    FMODAudioEngine::sharedEngine()->playEffect(default-click.ogg_spr);
   }
 
 // Release sounds
 
-  void releaseButton(PlayerButton p0) {
+  bool releaseButton(PlayerButton p0) {
     PlayerObject::releaseButton(p0);
 
   if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
