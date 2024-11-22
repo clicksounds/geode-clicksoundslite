@@ -27,6 +27,7 @@ public:
 
     // Play click sound
     FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
+    return ret;
   }
 
 // Release sounds
