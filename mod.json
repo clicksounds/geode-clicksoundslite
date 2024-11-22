@@ -1,11 +1,11 @@
 {
 	"geode": "4.0.1",
 	"gd": {
-        	"win": "2.2074",
-        	"android": "2.2074",
-        	"mac": "2.2074",
-        	"ios": "2.2074"
-    	},
+        "win": "2.2074",
+        "android": "2.2074",
+        "mac": "2.2074",
+        "ios": "2.2074"
+    },
 	"version": "v1.0.0",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
@@ -28,7 +28,7 @@
 		"custom-presssound": {
 			"name": "Click Sound File",
 			"type": "file",
-			"default": "resources/default-click.ogg",
+			"default": "Select a file",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
