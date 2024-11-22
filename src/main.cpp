@@ -12,42 +12,51 @@ public:
 	bool pushButton(PlayerButton p0) {
 		bool ret = PlayerObject::pushButton(p0);
 
-	if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
+	  if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
     	if (p0 != PlayerButton::Jump) {
     		return ret;
     	}
     }
 
-  if (!GameManager::sharedState()->getPlayLayer())
-    return ret;
+    if (!GameManager::sharedState()->getPlayLayer())
+      return ret;
 
-  log::debug("CSLite: Player jumped.");
+    log::debug("CSLite: Player jumped.");
 
-	// auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+	  if (Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string() != "Select a file") {
+      auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+    } else {
+      auto clickSoundFile = "default-click.ogg"_spr;
+    }
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect("default-click.ogg"_spr);
+    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
     return ret;
   }
 
 // Release sounds
-/*
-  bool releaseButton(PlayerButton p0) {
-    return PlayerObject::releaseButton(p0);
+	bool releaseButton(PlayerButton p0) {
+		bool ret = PlayerObject::releaseButton(p0);
 
-  if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
+	  if (Mod::get()->getSettingValue<bool>("OnlyOnJump")) {
       if (p0 != PlayerButton::Jump) {
-        return;
+      	return ret;
       }
     }
 
     if (!GameManager::sharedState()->getPlayLayer())
-      return;
+      return ret;
 
-	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+    log::debug("CSLite: Player jumped.");
 
-    // Play release sound
+    if (Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string() != "Select a file") {
+      auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+    } else {
+      auto releaseSoundFile = "default-release.ogg"_spr;
+    }
+
+    // Play click sound
     FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
+    return ret;
   }
-*/
 };
