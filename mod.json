@@ -29,6 +29,11 @@
 			"type": "bool",
 			"default": true
 		},
+		"enable-releasesounds": {
+			"name": "Enable Release Sounds",
+			"type": "bool",
+			"default": false
+		},
 		"custom-presssound": {
 			"name": "Click Sound File",
 			"type": "file",
@@ -39,11 +44,6 @@
 				 	"description": "Audio file"}
 				]
 			}
-		},
-		"enable-releasesounds": {
-			"name": "Enable Release Sounds",
-			"type": "bool",
-			"default": false
 		},
 		"custom-releasesound": {
 			"name": "Release Sound File",
