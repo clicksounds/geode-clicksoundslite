@@ -23,7 +23,7 @@ public:
 	auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound");
 
     // Play click sound
-    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile_spr);
+    FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
   }
 
 // Release sounds
@@ -43,6 +43,6 @@ public:
 	auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound");
 
     // Play release sound
-    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile_spr);
+    FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
   }
 };
