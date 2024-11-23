@@ -20,15 +20,24 @@
 		]
 	},
 	"settings": {
+		"volume-warning": {
+			"name": "CS Lite uses GD's built in SFX volume slider",
+			"type": "title"
+		},
 		"enable-clicksounds": {
 			"name": "Enable Click Sounds",
 			"type": "bool",
 			"default": true
 		},
+		"enable-releasesounds": {
+			"name": "Enable Release Sounds",
+			"type": "bool",
+			"default": false
+		},
 		"custom-presssound": {
 			"name": "Click Sound File",
 			"type": "file",
-			"default": "resources/default-click.ogg",
+			"default": "Select a file",
 			"control": {
 				"filters": [
 					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
@@ -36,13 +45,8 @@
 				]
 			}
 		},
-		"enable-releasesounds": {
-			"name": "Enable Release Sounds",
-			"type": "bool",
-			"default": false
-		},
 		"custom-releasesound": {
-			"name": "Click Sound File",
+			"name": "Release Sound File",
 			"type": "file",
 			"default": "resources/default-click.ogg",
 			"control": {
