@@ -19,6 +19,13 @@
 			"resources/**/*.png"
 		]
 	},
+	"dependencies": [
+		{
+			"id": "geode.node-ids",
+			"version": ">=1.17.0",
+			"importance": "required"
+		}
+	],
 	"settings": {
 		"volume-warning": {
 			"name": "CS Lite uses GD's built in SFX volume slider",
