@@ -6,7 +6,7 @@
         "mac": "2.2074",
         "ios": "2.2074"
     },
-	"version": "v1.0.3",
+	"version": "v1.0.4",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developer": "Beat",
@@ -16,7 +16,7 @@
 			"resources/**/*.ogg",
 			"resources/**/*.mp3",
 			"resources/**/*.wav",
-			"resources/**/*.m4a"
+			"resources/**/*.png"
 		]
 	},
 	"settings": {
@@ -40,7 +40,7 @@
 			"default": "Select a file",
 			"control": {
 				"filters": [
-					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
+					{"files": ["*.ogg", "*.mp3", "*.wav"],
 				 	"description": "Audio file"}
 				]
 			}
@@ -48,17 +48,23 @@
 		"custom-releasesound": {
 			"name": "Release Sound File",
 			"type": "file",
-			"default": "resources/default-click.ogg",
+			"default": "Select a file",
 			"control": {
 				"filters": [
-					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
+					{"files": ["*.ogg", "*.mp3", "*.wav"],
 				 	"description": "Audio file"}
 				]
 			}
 		},
-		"OnlyOnJump": {
+		"only-on-jump": {
 			"name": "Only play on jump",
 			"description": "Doesn't play sound on movement of platformer keys",
+			"type": "bool",
+			"default": true
+		},
+		"settings-button": {
+			"name": "Settings button in pause",
+			"description": "Shows the CS Lite settings button while paused. If disabled, settings are accessible from \nGeode > CSLite > Gear Icon.",
 			"type": "bool",
 			"default": true
 		}
