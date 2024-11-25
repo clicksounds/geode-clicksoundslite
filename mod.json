@@ -6,7 +6,7 @@
         "mac": "2.2074",
         "ios": "2.2074"
     },
-	"version": "v1.0.2",
+	"version": "v1.0.3",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developer": "Beat",
@@ -15,7 +15,8 @@
 		"files": [
 			"resources/**/*.ogg",
 			"resources/**/*.mp3",
-			"resources/**/*.wav"
+			"resources/**/*.wav",
+			"resources/**/*.m4a"
 		]
 	},
 	"settings": {
@@ -39,7 +40,7 @@
 			"default": "Select a file",
 			"control": {
 				"filters": [
-					{"files": ["*.ogg", "*.mp3", "*.wav"],
+					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
 				 	"description": "Audio file"}
 				]
 			}
@@ -50,7 +51,7 @@
 			"default": "resources/default-click.ogg",
 			"control": {
 				"filters": [
-					{"files": ["*.ogg", "*.mp3", "*.wav"],
+					{"files": ["*.ogg", "*.mp3", "*.wav", "*.m4a"],
 				 	"description": "Audio file"}
 				]
 			}

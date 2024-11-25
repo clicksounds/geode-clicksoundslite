@@ -16,7 +16,8 @@ public:
             }
         }
 
-        if (!GameManager::sharedState()->getPlayLayer()) {
+        // only continue if the player isnt in the editor or in gameplay
+        if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
             return ret;
         }
 
@@ -41,7 +42,7 @@ public:
             }
         }
 
-        if (!GameManager::sharedState()->getPlayLayer()) {
+        if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
             return ret;
         }
 
