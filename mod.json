@@ -6,7 +6,7 @@
         "mac": "2.2074",
         "ios": "2.2074"
     },
-	"version": "v1.0.4",
+	"version": "v1.0.5",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developer": "Beat",
@@ -26,6 +26,10 @@
 			"importance": "required"
 		}
 	],
+	"links": {
+        "community": "https://discord.gg/tu98bsGA32",
+		"source": "https://github.com/clicksounds/geode-clicksoundslite"
+	},
 	"settings": {
 		"volume-warning": {
 			"name": "CS Lite uses GD's built in SFX volume slider",
