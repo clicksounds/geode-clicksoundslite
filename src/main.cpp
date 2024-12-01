@@ -11,8 +11,13 @@ public:
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
 
+        // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
         if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
             if (p0 != PlayerButton::Jump) {
+                return ret;
+            }
+        } else {
+            if (p0 != PlayerButton::Jump && p0 != PlayerButton::Left && p0 != PlayerButton::Right) {
                 return ret;
             }
         }
@@ -44,10 +49,8 @@ public:
     bool releaseButton(PlayerButton p0) {
         bool ret = PlayerObject::releaseButton(p0);
 
-        if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
-            if (p0 != PlayerButton::Jump) {
-                return ret;
-            }
+        if (p0 != PlayerButton::Jump) {
+            return ret;
         }
 
         // only continue if the player isnt in the editor or in gameplay
