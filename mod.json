@@ -5,11 +5,11 @@
         "android": "2.2074",
         "mac": "2.2074",
         "ios": "2.2074"
-    },
+    	},
 	"version": "v1.0.6",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
-	"developer": "Beat",
+	"developers": ["Beat", "DwangML"],
 	"description": "A lighter version of click sounds",
 	"resources": {
 		"files": [
@@ -27,13 +27,29 @@
 		}
 	],
 	"links": {
-        "community": "https://discord.gg/tu98bsGA32",
+        	"community": "https://discord.gg/tu98bsGA32",
 		"source": "https://github.com/clicksounds/geode-clicksoundslite"
 	},
 	"settings": {
-		"volume-warning": {
-			"name": "CS Lite uses GD's built in SFX volume slider",
-			"type": "title"
+		"click-volume": {
+			"name": "Click sounds volume (%)",
+			"type": "int",
+			"default": 100,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
+		},
+		"release-volume": {
+			"name": "Release sounds volume (%)",
+			"type": "int",
+			"default": 100,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
 		},
 		"enable-clicksounds": {
 			"name": "Enable Click Sounds",
@@ -65,26 +81,6 @@
 					{"files": ["*.ogg", "*.mp3", "*.wav"],
 				 	"description": "Audio file"}
 				]
-			}
-		},
-		"click-volume": {
-			"name": "Click sounds volume (%)",
-			"type": "int",
-			"default": 100,
-			"min": 0,
-			"max": 100,
-			"control": {
-				"slider": true
-			}
-		},
-		"release-volume": {
-			"name": "Release sounds volume (%)",
-			"type": "int",
-			"default": 100,
-			"min": 0,
-			"max": 100,
-			"control": {
-				"slider": true
 			}
 		},
 		"only-on-jump": {
