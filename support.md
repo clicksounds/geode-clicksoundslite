@@ -1,1 +1,1 @@
-Join the [discord server](https://discord.gg/RwbRP8ADdc) for support!
+Join the [discord server](https://discord.gg/RwbRP8ADdc) for support.
