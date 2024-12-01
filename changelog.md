@@ -9,4 +9,4 @@
 ### 1.0.5
 - Minor fix: Buttons for the Github and Discord links now work.
 ### 1.0.6
-- Minor addition: Add custom sliders for volume control.
+- Minor fix: Added sliders for volume control in the settings menu.
