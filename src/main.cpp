@@ -101,6 +101,13 @@ public:
         if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
             return ret;
         }
+        
+        // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
+        if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
+            if (p0 != PlayerButton::Jump) {
+                return ret;
+            }
+        }
 
         auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
