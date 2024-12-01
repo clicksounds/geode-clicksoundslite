@@ -19,13 +19,6 @@
 			"resources/**/*.png"
 		]
 	},
-	"dependencies": [
-		{
-			"id": "geode.node-ids",
-			"version": ">=1.17.0",
-			"importance": "required"
-		}
-	],
 	"links": {
         	"community": "https://discord.gg/tu98bsGA32",
 		"source": "https://github.com/clicksounds/geode-clicksoundslite"
