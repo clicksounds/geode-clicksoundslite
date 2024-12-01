@@ -54,7 +54,7 @@ public:
             return ret;
         }
 
-        auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+        auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
 
@@ -65,9 +65,9 @@ public:
 
         if (release_vol <= 0) return ret;
 
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
+        if (system->createSound(releaseSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
             system->playSound(sound, nullptr, false, &channel);
-            channel->setVolume(click_vol / 50.f);
+            channel->setVolume(release_vol / 50.f);
         }
 
         return ret;
