@@ -16,10 +16,6 @@ public:
             if (p0 != PlayerButton::Jump) {
                 return ret;
             }
-        } else {
-            if (p0 != PlayerButton::Jump && p0 != PlayerButton::Left && p0 != PlayerButton::Right) {
-                return ret;
-            }
         }
 
         // only continue if the player isn't in the editor or in gameplay
@@ -59,17 +55,17 @@ public:
         }
 
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
-        auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
-        auto click_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
+        auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
+        auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
 
         auto fae = FMODAudioEngine::sharedEngine();
         auto system = fae->m_system;
         FMOD::Channel* channel;
         FMOD::Sound* sound;
 
-        if (click_vol <= 0) return ret;
+        if (release_vol <= 0) return ret;
 
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
+        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
             system->playSound(sound, nullptr, false, &channel);
             channel->setVolume(click_vol / 50.f);
         }
