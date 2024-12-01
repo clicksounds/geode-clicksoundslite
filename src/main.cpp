@@ -5,6 +5,7 @@
 
 using namespace geode::prelude;
 
+// the check to see if you should play the sound or not
 bool integrityCheck(PlayerObject* object) {
     GJGameLevel* Level;
      if (!PlayLayer::get()) {
@@ -30,8 +31,8 @@ bool integrityCheck(PlayerObject* object) {
 
 class $modify(PlayerObject) {
 public:
+    // add it to fields to access later but stored in the object (m_fields->Var)
     struct Fields {
-        // add only one channel per player object to prevent lag on click by creating 100's of sound channels
          FMOD::Channel* channel;
          bool directionUp = false;
          bool directionRight = false;
@@ -135,14 +136,13 @@ class $modify(CSLitePauseLayer, PauseLayer) {
       geode::openSettingsPopup(Mod::get());
   }
 
-
-
   void customSetup() {
     PauseLayer::customSetup();
     auto winSize = CCDirector::sharedDirector()->getWinSize();
-    // failed to get, either someone doesn't have nodeids or messed something up so don't crash ;)
-   CCNode* menu = this->getChildByID("left-button-menu");
+    CCNode* menu = this->getChildByID("left-button-menu");
+    // have you failed to get? so i don't wanna crash
     if (!menu) {
+         // failed to get, either someone doesn't have nodeids or messed something up so don't crash ;)
         menu = CCMenu::create();menu->setLayout(
             ColumnLayout::create()
                 ->setGap(4.f)
@@ -155,9 +155,6 @@ class $modify(CSLitePauseLayer, PauseLayer) {
         menu->setZOrder(10);
         this->addChild(menu);
     }
-
-
-
     auto spr = CCSprite::create("csLiteSettingsSprite.png"_spr);
 
     auto btn = CCMenuItemSpriteExtra::create(
