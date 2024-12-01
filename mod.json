@@ -9,7 +9,7 @@
 	"version": "v1.0.6",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
-	"developers": ["Beat", "DwangML"],
+	"developers": ["Beat", "Dwang-ML"],
 	"description": "A lighter version of click sounds",
 	"resources": {
 		"files": [
@@ -30,6 +30,13 @@
         	"community": "https://discord.gg/tu98bsGA32",
 		"source": "https://github.com/clicksounds/geode-clicksoundslite"
 	},
+	"tags": [
+		"universal",
+		"gameplay",
+		"editor",
+		"offline",
+		"customization"
+	],
 	"settings": {
 		"click-volume": {
 			"name": "Click sounds volume (%)",
