@@ -37,6 +37,7 @@ public:
          bool directionRight = false;
          bool directionLeft = false;
     };
+    // For setting bools for setting dir
     void SetupNewDirections(PlayerButton p0, bool Set) { 
         switch (p0) { 
             case PlayerButton::Jump:   m_fields->directionUp = Set; break; 
@@ -45,6 +46,7 @@ public:
             default:break; 
         } 
     }
+    // getting the bools in a orderly way
     bool GetNewDirections(PlayerButton p0) { 
         switch (p0) { 
             case PlayerButton::Jump:   return m_fields->directionUp; break; 
@@ -57,24 +59,27 @@ public:
     // click sounds
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
-
+        // check if you can and or check if it is correct
         if (!integrityCheck(this)) {
             return ret;
         };
+
         // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
         if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
             if (p0 != PlayerButton::Jump) {
                 return ret;
             }
         }
-
+        
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
-
-
+        // set the direction bool to true
+        SetupNewDirections(p0,true);
+        // volume above 0?
         if (click_vol <= 0) return ret;
-        
+
+        // sound player
         FMODAudioEngine* FMOD = FMODAudioEngine::sharedEngine();
         auto system = FMOD->m_system;
         FMOD::Sound* sound;
@@ -82,17 +87,17 @@ public:
             system->playSound(sound, nullptr, false, &m_fields->channel);
             m_fields->channel->setVolume(click_vol / 50.f);
         }
-        SetupNewDirections(p0,true);
         return ret;
     }
 
     // release sounds
     bool releaseButton(PlayerButton p0) {
         bool ret = PlayerObject::releaseButton(p0);
-        
+        // Did you click? check
         if (!GetNewDirections(p0)) {
             return ret;
         };
+        // check if you can and or check if it is correct
          if (!integrityCheck(this)) {
             return ret;
         };
@@ -107,18 +112,19 @@ public:
         auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
-
+        // set the direction bool to false
+        SetupNewDirections(p0,false);
+        // volume above 0?
+        if (release_vol <= 0) return ret;
+        
+        // sound player
         auto fae = FMODAudioEngine::sharedEngine();
         auto system = fae->m_system;
         FMOD::Sound* sound;
-
-        if (release_vol <= 0) return ret;
-
         if (system->createSound(releaseSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
             system->playSound(sound, nullptr, false, &m_fields->channel);
             m_fields->channel->setVolume(release_vol / 50.f);
         }
-        SetupNewDirections(p0,false);
         return ret;
     }
 };
