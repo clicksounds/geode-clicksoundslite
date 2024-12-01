@@ -6,7 +6,13 @@
 using namespace geode::prelude;
 
 // the check to see if you should play the sound or not
-bool integrityCheck(PlayerObject* object) {
+bool integrityCheck(PlayerObject* object, PlayerButton* Pressed) {
+    // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
+    if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
+        if (Pressed != PlayerButton::Jump) {
+            return false;
+        }
+    }
     GJGameLevel* Level;
      if (!PlayLayer::get()) {
         if (!LevelEditorLayer::get()) {
@@ -61,17 +67,10 @@ public:
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
         // check if you can and or check if it is correct
-        if (!integrityCheck(this)) {
+        if (!integrityCheck(this,p0)) {
             return ret;
         };
 
-        // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
-        if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
-            if (p0 != PlayerButton::Jump) {
-                return ret;
-            }
-        }
-        
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
@@ -99,16 +98,9 @@ public:
             return ret;
         };
         // check if you can and or check if it is correct
-         if (!integrityCheck(this)) {
+         if (!integrityCheck(this,p0)) {
             return ret;
         };
-        
-        // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
-        if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
-            if (p0 != PlayerButton::Jump) {
-                return ret;
-            }
-        }
 
         auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
