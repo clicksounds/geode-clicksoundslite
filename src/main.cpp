@@ -26,10 +26,29 @@ bool integratyCheck(PlayerObject* object) {
 class $modify(PlayerObject) {
 public:
     struct Fields {
-        // add only one channel per player object to prevent lag on click by create 100's of sound channels
+        // add only one channel per player object to prevent lag on click by creating 100's of sound channels
          FMOD::Channel* channel;
+         bool directionUp = false;
+         bool directionRight = false;
+         bool directionLeft = false;
     };
-
+    void SetupNewDirections(PlayerButton p0, bool Set) { 
+        switch (p0) { 
+            case PlayerButton::Jump:   m_fields->directionUp = Set; break; 
+            case PlayerButton::Right:  m_fields->directionRight = Set; break; 
+            case PlayerButton::Left:  m_fields->directionLeft = Set; break; 
+            default:break; 
+        } 
+    }
+    bool GetNewDirections(PlayerButton p0) { 
+        switch (p0) { 
+            case PlayerButton::Jump:   return m_fields->directionUp; break; 
+            case PlayerButton::Right:  return m_fields->directionRight; break; 
+            case PlayerButton::Left:  return m_fields->directionLeft; break; 
+            default:break; 
+        } 
+        return false;
+    }
     // click sounds
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
@@ -63,20 +82,20 @@ public:
             system->playSound(sound, nullptr, false, &m_fields->channel);
             m_fields->channel->setVolume(click_vol / 50.f);
         }
+        SetupNewDirections(p0,true);
         return ret;
     }
 
     // release sounds
     bool releaseButton(PlayerButton p0) {
         bool ret = PlayerObject::releaseButton(p0);
-
+        
+        if (!GetNewDirections(p0)) {
+            return ret;
+        };
          if (!integratyCheck(this)) {
             return ret;
         };
-
-        if (p0 != PlayerButton::Jump) {
-            return ret;
-        }
 
         // only continue if the player isnt in the editor or in gameplay
         if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
@@ -97,7 +116,7 @@ public:
             system->playSound(sound, nullptr, false, &m_fields->channel);
             m_fields->channel->setVolume(release_vol / 50.f);
         }
-
+        SetupNewDirections(p0,false);
         return ret;
     }
 };
