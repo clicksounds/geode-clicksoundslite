@@ -31,7 +31,9 @@ public:
         FMOD::Channel* channel;
         FMOD::Sound* sound;
 
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled && click_vol != 0) {
+        if (click_vol <= 0) return ret;
+
+        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
             system->playSound(sound, nullptr, false, &channel);
             channel->setVolume(click_vol / 50.f);
         }
@@ -62,7 +64,9 @@ public:
         FMOD::Channel* channel;
         FMOD::Sound* sound;
 
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled && click_vol != 0) {
+        if (click_vol <= 0) return ret;
+
+        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
             system->playSound(sound, nullptr, false, &channel);
             channel->setVolume(click_vol / 50.f);
         }
