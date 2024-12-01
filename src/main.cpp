@@ -5,7 +5,7 @@
 
 using namespace geode::prelude;
 
-bool integratyCheck(PlayerObject* object) {
+bool integrityCheck(PlayerObject* object) {
     GJGameLevel* Level;
      if (!PlayLayer::get()) {
         if (!LevelEditorLayer::get()) {
@@ -53,7 +53,7 @@ public:
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
 
-        if (!integratyCheck(this)) {
+        if (!integrityCheck(this)) {
             return ret;
         };
         // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
@@ -93,7 +93,7 @@ public:
         if (!GetNewDirections(p0)) {
             return ret;
         };
-         if (!integratyCheck(this)) {
+         if (!integrityCheck(this)) {
             return ret;
         };
 
