@@ -10,7 +10,7 @@
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developers": ["Beat", "Dwang-ML"],
-	"description": "A lighter version of click sounds",
+	"description": "A lighter version of click sounds.",
 	"resources": {
 		"files": [
 			"resources/**/*.ogg",
@@ -20,7 +20,7 @@
 		]
 	},
 	"links": {
-        	"community": "https://discord.gg/tu98bsGA32",
+		"community": "https://discord.gg/tu98bsGA32",
 		"source": "https://github.com/clicksounds/geode-clicksoundslite"
 	},
 	"tags": [
@@ -85,7 +85,7 @@
 		},
 		"only-on-jump": {
 			"name": "Only play on jump",
-			"description": "Doesn't play sound on movement of platformer keys",
+			"description": "Doesn't play sound on movement of platformer keys.",
 			"type": "bool",
 			"default": true
 		},
