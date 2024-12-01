@@ -8,3 +8,5 @@
 - Minor fix: Added the mod settings button to the pause screen.
 ### 1.0.5
 - Minor fix: Buttons for the Github and Discord links now work.
+### 1.0.6
+- Minor addition: Add custom sliders for volume control.

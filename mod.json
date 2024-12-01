@@ -6,7 +6,7 @@
         "mac": "2.2074",
         "ios": "2.2074"
     },
-	"version": "v1.0.5",
+	"version": "v1.0.6",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developer": "Beat",
@@ -72,6 +72,26 @@
 			"description": "Doesn't play sound on movement of platformer keys",
 			"type": "bool",
 			"default": true
+		},
+		"click-volume": {
+			"name": "Click sounds volume (%)",
+			"type": "int",
+			"default": 100,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
+		},
+		"release-volume": {
+			"name": "Release sounds volume (%)",
+			"type": "int",
+			"default": 100,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
 		},
 		"settings-button": {
 			"name": "Settings button in pause",
