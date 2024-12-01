@@ -34,7 +34,7 @@
 		"click-volume": {
 			"name": "Click sounds volume (%)",
 			"type": "int",
-			"default": 100,
+			"default": 50,
 			"min": 0,
 			"max": 100,
 			"control": {
@@ -44,7 +44,7 @@
 		"release-volume": {
 			"name": "Release sounds volume (%)",
 			"type": "int",
-			"default": 100,
+			"default": 50,
 			"min": 0,
 			"max": 100,
 			"control": {
