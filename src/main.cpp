@@ -112,6 +112,7 @@ class $modify(CSLitePauseLayer, PauseLayer) {
 
   void customSetup() {
     PauseLayer::customSetup();
+    auto winSize = CCDirector::sharedDirector()->getWinSize();
     // failed to get, either someone doesn't have nodeids or messed something up so don't crash ;)
    CCNode* menu = this->getChildByID("left-button-menu");
     if (!menu) {
@@ -122,11 +123,14 @@ class $modify(CSLitePauseLayer, PauseLayer) {
                 ->setAxisReverse(true)
                 ->setCrossAxisOverflow(false)
         );
+        menu->setPosition({36.f, (winSize.height / 2)});
+        menu->setContentSize({40, winSize.height - 40.f});
+        menu->setZOrder(10);
+        this->addChild(menu);
     }
 
 
 
-    auto winSize = CCDirector::sharedDirector()->getWinSize();
     auto spr = CCSprite::create("csLiteSettingsSprite.png"_spr);
 
     auto btn = CCMenuItemSpriteExtra::create(
