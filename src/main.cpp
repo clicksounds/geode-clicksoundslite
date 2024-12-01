@@ -17,19 +17,26 @@ public:
             }
         }
 
-        // only continue if the player isnt in the editor or in gameplay
+        // only continue if the player isn't in the editor or in gameplay
         if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
             return ret;
         }
 
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
+        auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
 
-        // play click sound
-        if (isClickEnabled) {
-            FMODAudioEngine::sharedEngine()->playEffect(clickSoundFile);
+        auto fae = FMODAudioEngine::sharedEngine();
+        auto system = fae->m_system;
+        FMOD::Channel* channel;
+        FMOD::Sound* sound;
+
+        if (click_vol <= 0) return ret;
+
+        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
+            system->playSound(sound, nullptr, false, &channel);
+            channel->setVolume(click_vol / 50.f);
         }
-
         return ret;
     }
 
@@ -48,12 +55,20 @@ public:
             return ret;
         }
 
-        auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
-        auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
+        auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+        auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
+        auto click_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
 
-        // play release sound
-        if (isReleaseEnabled) {
-            FMODAudioEngine::sharedEngine()->playEffect(releaseSoundFile);
+        auto fae = FMODAudioEngine::sharedEngine();
+        auto system = fae->m_system;
+        FMOD::Channel* channel;
+        FMOD::Sound* sound;
+
+        if (click_vol <= 0) return ret;
+
+        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
+            system->playSound(sound, nullptr, false, &channel);
+            channel->setVolume(click_vol / 50.f);
         }
 
         return ret;
