@@ -13,9 +13,14 @@ bool integrityCheck(PlayerObject* object) {
         }
         Level = LevelEditorLayer::get()->m_level;
      } else {
-        Level = PlayLayer::get()->m_level;
+        PlayLayer* Pl = PlayLayer::get();
+        // Mac fix
+        if (Pl->m_isPaused) {
+            return false;
+        }
+        Level = Pl->m_level;
      };
-     
+
      if (object->m_isSecondPlayer && !Level->m_twoPlayerMode || !object->m_isSecondPlayer) {
         return true;
      } else {
@@ -63,11 +68,6 @@ public:
             }
         }
 
-        // only continue if the player isn't in the editor or in gameplay
-        if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
-            return ret;
-        }
-
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
@@ -96,11 +96,6 @@ public:
          if (!integrityCheck(this)) {
             return ret;
         };
-
-        // only continue if the player isnt in the editor or in gameplay
-        if (!GameManager::sharedState()->getPlayLayer() && !GameManager::sharedState()->getEditorLayer()) {
-            return ret;
-        }
         
         // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
         if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
