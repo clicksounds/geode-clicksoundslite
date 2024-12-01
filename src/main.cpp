@@ -165,7 +165,7 @@ class $modify(CSLitePauseLayer, PauseLayer) {
     spr->setScale(0.7f);
     if(Mod::get()->getSettingValue<bool>("settings-button")) {
       btn->setPosition({menu->getContentSize().width / 2, btn->getContentSize().height / 2});
-      btn->setID("csLiteSettingsButton");
+      btn->setID("csLiteSettingsButton"_spr);
       menu->addChild(btn);
     }
   }
