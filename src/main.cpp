@@ -134,7 +134,7 @@ class $modify(CSLitePauseLayer, PauseLayer) {
     CCNode* menu = this->getChildByID("left-button-menu");
     // have you failed to get? so i don't wanna crash
     if (!menu) {
-         // failed to get, either someone doesn't have nodeids or messed something up so don't crash ;)
+         // failed to get, either someone doesn't have node ids or messed something up so don't crash ;)
         menu = CCMenu::create();menu->setLayout(
             ColumnLayout::create()
                 ->setGap(4.f)
