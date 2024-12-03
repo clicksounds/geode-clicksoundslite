@@ -2,7 +2,7 @@
 
 ### About
 This is Click Sounds Lite. A mod made to be a lighter version of [Click Sounds](https://github.com/clicksounds/geode-clicksound).
-Lite discludes some features from the full version of Click Sounds, such as the built-in sound library.
+Lite excludes some features from the full version of Click Sounds, such as the built-in sound library.
 
 ### Contact Us
 Feel free to contact developers in our [discord server](https://discord.gg/RwbRP8ADdc) or raise an [issue](https://github.com/clicksounds/geode-clicksoundslite/issues) if there are any bugs. 
