@@ -28,11 +28,13 @@ bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
         Level = Pl->m_level;
      };
 
-     if (object->m_isSecondPlayer && !Level->m_twoPlayerMode || !object->m_isSecondPlayer) {
+    // this code doesnt work, commented out
+    /* if (object->m_isSecondPlayer && !Level->m_twoPlayerMode || !object->m_isSecondPlayer) {
         return true;
      } else {
         return false;
      }
+    */
 }
 
 class $modify(PlayerObject) {
