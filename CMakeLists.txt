@@ -11,8 +11,8 @@ if (MSVC)
     set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} /LTCG /OPT:REF /OPT:ICF")
 elseif(CMAKE_SYSTEM_NAME STREQUAL "Darwin")
     # macOS Dumbshit specific size optimization flags
-    #set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os -ffunction-sections -fdata-sections -flto -fno-rtti -fno-exceptions -g0")
-    #set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -Wl,-dead_strip -Wl,-x")
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os -ffunction-sections -fdata-sections -flto -fno-rtti -fno-exceptions -g0")
+    set(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS_RELEASE} -Wl,-dead_strip -Wl,-x")
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU" OR CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     # GCC/Clang-specific flags for size optimization
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Os -ffunction-sections -fdata-sections -flto -fno-rtti -fno-exceptions")
@@ -47,8 +47,8 @@ if (EXISTS "${CMAKE_COMMAND}" AND COMMAND_UPX_AVAILABLE)
     # Strip using macos
     if (CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-           # COMMAND strip -x "$<TARGET_FILE:${PROJECT_NAME}>"
-            #COMMAND upx --best "$<TARGET_FILE:${PROJECT_NAME}>"
+            COMMAND strip -x "$<TARGET_FILE:${PROJECT_NAME}>"
+            COMMAND upx --best "$<TARGET_FILE:${PROJECT_NAME}>"
             COMMENT "Stripping and compressing binary with UPX for macOS")
     else()
         # Normal Compress command
