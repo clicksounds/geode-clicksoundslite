@@ -105,9 +105,9 @@ public:
         // set the direction bool to true
         SetupNewDirections(p0,true);
         
-        // volume above 0?
+        // is it enabled or is volume < 0
         if (click_vol <= 0 || !isClickEnabled) return ret;
-
+        // should call failsafe if sound isn't the same?
         if (ClickSound->m_soundFile != clickSoundFile) {
             ClickSound->Setsound(clickSoundFile);
         }
@@ -136,9 +136,9 @@ public:
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
         // set the direction bool to false
         SetupNewDirections(p0,false);
-
+        // is it enabled or is volume < 0
         if (release_vol <= 0 || !isReleaseEnabled) return ret;
-
+        // should call failsafe if sound isn't the same?
         if (ReleaseSound->m_soundFile != releaseSoundFile) {
             ReleaseSound->Setsound(releaseSoundFile);
         }
@@ -194,14 +194,17 @@ class $modify(CSLitePauseLayer, PauseLayer) {
   }
 };
 
-// on settings update
+// on the mod loading
 $execute {
+    // Does the release sound setting change?
     listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
         ReleaseSound->Setsound(releaseSoundFile.string());
     });
+    // Does the release sound setting change?
      listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
         ClickSound->Setsound(PressSoundSoundFile.string());
     });
+    // on boot set Sound Caches
     std::string releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
     ReleaseSound->Setsound(releaseSoundFile);
     std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
