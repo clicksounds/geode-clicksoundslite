@@ -13,3 +13,5 @@
 - Minor fix: Node-IDs is no longer required.
 - Minor fix: Release sounds will no longer play when respawning or opening the pause menu.
 - Minor fix: The settings button in the pause menu is now consistently sized across all devices.
+### 1.0.7
+- Minor fix: The settings button in the pause menu is now actually consistently sized across all devices.
