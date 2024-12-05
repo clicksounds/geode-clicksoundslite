@@ -9,16 +9,16 @@ using namespace geode::prelude;
 // Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
 class SoundCache {
     public:
-        const char* m_soundFile;
+        std::string m_soundFile;
         FMOD::Sound* m_sound;
         SoundCache() {};
 
-        void Setsound(const char* soundFile) {
-            
-                m_soundFile = soundFile;
-                if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile, FMOD_DEFAULT, nullptr, &m_sound) != FMOD_OK) {
-                    m_soundFile = nullptr;
-                }
+        void Setsound(std::string soundFile) {
+                if (soundFile.c_str()) {
+                    if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile.c_str(), FMOD_DEFAULT, nullptr, &m_sound) == FMOD_OK) {
+                       m_soundFile = soundFile;
+                    }
+                } 
         }
 
         ~SoundCache() {
@@ -106,9 +106,9 @@ public:
         SetupNewDirections(p0,true);
         // volume above 0?
         if (click_vol <= 0 || !isClickEnabled) return ret;
-        if (ClickSound->m_soundFile != clickSoundFile.c_str()) {
-            ClickSound->Setsound(clickSoundFile.c_str());
-            log::debug("new sound");
+        
+        if (ClickSound->m_soundFile != clickSoundFile) {
+            ClickSound->Setsound(clickSoundFile);
         }
         // sound player
         if (ClickSound->m_sound) {
@@ -136,11 +136,10 @@ public:
         // set the direction bool to false
         SetupNewDirections(p0,false);
 
-
         if (release_vol <= 0 || !isReleaseEnabled) return ret;
 
-        if (ReleaseSound->m_soundFile != releaseSoundFile.c_str()) {
-            ReleaseSound->Setsound(releaseSoundFile.c_str());
+        if (ReleaseSound->m_soundFile != releaseSoundFile) {
+            ReleaseSound->Setsound(releaseSoundFile);
         }
         // sound player
         if (ReleaseSound->m_sound) {
@@ -196,18 +195,14 @@ class $modify(CSLitePauseLayer, PauseLayer) {
 // on settings update
 $execute {
     listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
-        ReleaseSound->Setsound(releaseSoundFile.string().c_str());
+        ReleaseSound->Setsound(releaseSoundFile.string());
     });
      listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
-        ClickSound->Setsound(PressSoundSoundFile.string().c_str());
+        ClickSound->Setsound(PressSoundSoundFile.string());
     });
     std::string releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
-    if (releaseSoundFile.c_str()) {
-        ReleaseSound->Setsound(releaseSoundFile.c_str());
-     }
+    ReleaseSound->Setsound(releaseSoundFile);
     std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
-    if (clickSoundFile.c_str()) {
-        ClickSound->Setsound(clickSoundFile.c_str());
-     }
+    ClickSound->Setsound(clickSoundFile);
 }
 
