@@ -196,11 +196,11 @@ class $modify(CSLitePauseLayer, PauseLayer) {
 
 // on the mod loading
 $execute {
-    // Does the release sound setting change?
+    // Does the release-sound path setting change?
     listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
         ReleaseSound->Setsound(releaseSoundFile.string());
     });
-    // Does the release sound setting change?
+    // Does the click-sound path setting change?
      listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
         ClickSound->Setsound(PressSoundSoundFile.string());
     });
