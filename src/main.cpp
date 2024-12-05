@@ -104,9 +104,10 @@ public:
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
         // set the direction bool to true
         SetupNewDirections(p0,true);
+        
         // volume above 0?
         if (click_vol <= 0 || !isClickEnabled) return ret;
-        
+
         if (ClickSound->m_soundFile != clickSoundFile) {
             ClickSound->Setsound(clickSoundFile);
         }
@@ -188,6 +189,7 @@ class $modify(CSLitePauseLayer, PauseLayer) {
       btn->setPosition({menu->getContentSize().width / 2, btn->getContentSize().height / 2});
       btn->setID("csLiteSettingsButton"_spr);
       menu->addChild(btn);
+      menu->updateLayout();
     }
   }
 };
