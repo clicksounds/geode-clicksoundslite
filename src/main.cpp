@@ -2,8 +2,37 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/ui/GeodeUI.hpp>
+#include <Geode/loader/SettingV3.hpp>
 
 using namespace geode::prelude;
+
+// Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
+class SoundCache {
+    public:
+        const char* m_soundFile;
+        FMOD::Sound* m_sound;
+        SoundCache() {};
+
+        void Setsound(const char* soundFile) {
+            
+                m_soundFile = soundFile;
+                if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile, FMOD_DEFAULT, nullptr, &m_sound) != FMOD_OK) {
+                    m_soundFile = nullptr;
+                }
+        }
+
+        ~SoundCache() {
+            if (m_sound) {
+                m_sound->release();
+            }
+        };
+
+};
+
+// Create the classes for Caching
+static FMOD::Channel* Soundchannel;
+static SoundCache* ClickSound = new SoundCache();
+static SoundCache* ReleaseSound = new SoundCache();
 
 // the check to see if you should play the sound or not
 bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
@@ -36,13 +65,13 @@ bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
 
 class $modify(PlayerObject) {
 public:
-    // add it to fields to access later but stored in the object (m_fields->Var)
+        // add it to fields to access later but stored in the object (m_fields->Var)
     struct Fields {
-         FMOD::Channel* channel;
          bool directionUp = false;
          bool directionRight = false;
          bool directionLeft = false;
     };
+    
     // For setting bools for setting dir
     void SetupNewDirections(PlayerButton p0, bool Set) { 
         switch (p0) { 
@@ -76,15 +105,15 @@ public:
         // set the direction bool to true
         SetupNewDirections(p0,true);
         // volume above 0?
-        if (click_vol <= 0) return ret;
-
+        if (click_vol <= 0 || !isClickEnabled) return ret;
+        if (ClickSound->m_soundFile != clickSoundFile.c_str()) {
+            ClickSound->Setsound(clickSoundFile.c_str());
+            log::debug("new sound");
+        }
         // sound player
-        FMODAudioEngine* FMOD = FMODAudioEngine::sharedEngine();
-        auto system = FMOD->m_system;
-        FMOD::Sound* sound;
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
-            system->playSound(sound, nullptr, false, &m_fields->channel);
-            m_fields->channel->setVolume(click_vol / 50.f);
+        if (ClickSound->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(ClickSound->m_sound, nullptr, false, &Soundchannel);
+           Soundchannel->setVolume(click_vol / 50.f);
         }
         return ret;
     }
@@ -106,17 +135,19 @@ public:
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
         // set the direction bool to false
         SetupNewDirections(p0,false);
-        // volume above 0?
-        if (release_vol <= 0) return ret;
-        
-        // sound player
-        auto fae = FMODAudioEngine::sharedEngine();
-        auto system = fae->m_system;
-        FMOD::Sound* sound;
-        if (system->createSound(releaseSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
-            system->playSound(sound, nullptr, false, &m_fields->channel);
-            m_fields->channel->setVolume(release_vol / 50.f);
+
+
+        if (release_vol <= 0 || !isReleaseEnabled) return ret;
+
+        if (ReleaseSound->m_soundFile != releaseSoundFile.c_str()) {
+            ReleaseSound->Setsound(releaseSoundFile.c_str());
         }
+        // sound player
+        if (ReleaseSound->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(ReleaseSound->m_sound, nullptr, false, &Soundchannel);
+            Soundchannel->setVolume(release_vol / 50.f);
+        }
+
         return ret;
     }
 };
@@ -161,3 +192,22 @@ class $modify(CSLitePauseLayer, PauseLayer) {
     }
   }
 };
+
+// on settings update
+$execute {
+    listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
+        ReleaseSound->Setsound(releaseSoundFile.string().c_str());
+    });
+     listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
+        ClickSound->Setsound(PressSoundSoundFile.string().c_str());
+    });
+    std::string releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+    if (releaseSoundFile.c_str()) {
+        ReleaseSound->Setsound(releaseSoundFile.c_str());
+     }
+    std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+    if (clickSoundFile.c_str()) {
+        ClickSound->Setsound(clickSoundFile.c_str());
+     }
+}
+
