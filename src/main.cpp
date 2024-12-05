@@ -158,6 +158,7 @@ class $modify(CSLitePauseLayer, PauseLayer) {
       btn->setPosition({menu->getContentSize().width / 2, btn->getContentSize().height / 2});
       btn->setID("csLiteSettingsButton"_spr);
       menu->addChild(btn);
+      menu->updateLayout();
     }
   }
 };
