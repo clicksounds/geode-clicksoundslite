@@ -2,8 +2,37 @@
 #include <Geode/modify/PlayerObject.hpp>
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/ui/GeodeUI.hpp>
+#include <Geode/loader/SettingV3.hpp>
 
 using namespace geode::prelude;
+
+// Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
+class SoundCache {
+    public:
+        std::string m_soundFile;
+        FMOD::Sound* m_sound;
+        SoundCache() {};
+
+        void Setsound(std::string soundFile) {
+                if (soundFile.c_str()) {
+                    if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile.c_str(), FMOD_DEFAULT, nullptr, &m_sound) == FMOD_OK) {
+                       m_soundFile = soundFile;
+                    }
+                } 
+        }
+
+        ~SoundCache() {
+            if (m_sound) {
+                m_sound->release();
+            }
+        };
+
+};
+
+// Create the classes for Caching
+static FMOD::Channel* Soundchannel;
+static SoundCache* ClickSound = new SoundCache();
+static SoundCache* ReleaseSound = new SoundCache();
 
 // the check to see if you should play the sound or not
 bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
@@ -36,13 +65,13 @@ bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
 
 class $modify(PlayerObject) {
 public:
-    // add it to fields to access later but stored in the object (m_fields->Var)
+        // add it to fields to access later but stored in the object (m_fields->Var)
     struct Fields {
-         FMOD::Channel* channel;
          bool directionUp = false;
          bool directionRight = false;
          bool directionLeft = false;
     };
+    
     // For setting bools for setting dir
     void SetupNewDirections(PlayerButton p0, bool Set) { 
         switch (p0) { 
@@ -75,16 +104,17 @@ public:
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
         // set the direction bool to true
         SetupNewDirections(p0,true);
-        // volume above 0?
-        if (click_vol <= 0) return ret;
-
+        
+        // is it enabled or is volume < 0
+        if (click_vol <= 0 || !isClickEnabled) return ret;
+        // should call failsafe if sound isn't the same?
+        if (ClickSound->m_soundFile != clickSoundFile) {
+            ClickSound->Setsound(clickSoundFile);
+        }
         // sound player
-        FMODAudioEngine* FMOD = FMODAudioEngine::sharedEngine();
-        auto system = FMOD->m_system;
-        FMOD::Sound* sound;
-        if (system->createSound(clickSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isClickEnabled) {
-            system->playSound(sound, nullptr, false, &m_fields->channel);
-            m_fields->channel->setVolume(click_vol / 50.f);
+        if (ClickSound->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(ClickSound->m_sound, nullptr, false, &Soundchannel);
+           Soundchannel->setVolume(click_vol / 50.f);
         }
         return ret;
     }
@@ -106,17 +136,18 @@ public:
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
         // set the direction bool to false
         SetupNewDirections(p0,false);
-        // volume above 0?
-        if (release_vol <= 0) return ret;
-        
-        // sound player
-        auto fae = FMODAudioEngine::sharedEngine();
-        auto system = fae->m_system;
-        FMOD::Sound* sound;
-        if (system->createSound(releaseSoundFile.c_str(), FMOD_DEFAULT, nullptr, &sound) == FMOD_OK && isReleaseEnabled) {
-            system->playSound(sound, nullptr, false, &m_fields->channel);
-            m_fields->channel->setVolume(release_vol / 50.f);
+        // is it enabled or is volume < 0
+        if (release_vol <= 0 || !isReleaseEnabled) return ret;
+        // should call failsafe if sound isn't the same?
+        if (ReleaseSound->m_soundFile != releaseSoundFile) {
+            ReleaseSound->Setsound(releaseSoundFile);
         }
+        // sound player
+        if (ReleaseSound->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(ReleaseSound->m_sound, nullptr, false, &Soundchannel);
+            Soundchannel->setVolume(release_vol / 50.f);
+        }
+
         return ret;
     }
 };
@@ -162,3 +193,21 @@ class $modify(CSLitePauseLayer, PauseLayer) {
     }
   }
 };
+
+// on the mod loading
+$execute {
+    // Does the release-sound path setting change?
+    listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
+        ReleaseSound->Setsound(releaseSoundFile.string());
+    });
+    // Does the click-sound path setting change?
+     listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
+        ClickSound->Setsound(PressSoundSoundFile.string());
+    });
+    // on boot set Sound Caches
+    std::string releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
+    ReleaseSound->Setsound(releaseSoundFile);
+    std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
+    ClickSound->Setsound(clickSoundFile);
+}
+
