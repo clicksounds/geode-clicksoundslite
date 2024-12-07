@@ -15,3 +15,6 @@
 - Minor fix: The settings button in the pause menu is now consistently sized across all devices.
 ### 1.0.7
 - Minor fix: The settings button in the pause menu is now actually consistently sized across all devices.
+### 1.0.8
+- Minor fix: Reduced lag on Android.
+- Minor fix: Dual mode no longer plays the release sound twice.
