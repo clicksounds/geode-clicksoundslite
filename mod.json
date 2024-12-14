@@ -111,6 +111,17 @@
 			"description": "Shows the CS Lite settings button while paused. If disabled, settings are accessible from \nGeode > CSLite > Gear Icon.",
 			"type": "bool",
 			"default": true
+		},
+		"pitch": {
+			"name": "Pitch of the sounds (%)",
+			"description": "Determines the pitch of the click/release sound. Default is 50%, 0% will mute the sound. Because of geode, pitch will also adjust the playback speed for some reason.",
+			"type": "int",
+			"default": 50,
+			"min": 0,
+			"max": 100,
+			"control": {
+				"slider": true
+			}
 		}
 	}
 }

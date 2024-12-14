@@ -103,6 +103,8 @@ public:
         auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
+        auto pitch = Mod::get()->getSettingValue<int64_t>("pitch");
+
         // set the direction bool to true
         SetupNewDirections(p0,true);
         
@@ -116,6 +118,7 @@ public:
         if (ClickSound->m_sound) {
             FMODAudioEngine::sharedEngine()->m_system->playSound(ClickSound->m_sound, nullptr, false, &Soundchannel);
            Soundchannel->setVolume(click_vol / 50.f);
+           Soundchannel->setPitch(pitch * (2.0f / 99.0f));
         }
         return ret;
     }
@@ -135,6 +138,8 @@ public:
         auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
+        auto pitch = Mod::get()->getSettingValue<int64_t>("pitch");
+
         // set the direction bool to false
         SetupNewDirections(p0,false);
         // is it enabled or is volume < 0
@@ -147,6 +152,7 @@ public:
         if (ReleaseSound->m_sound) {
             FMODAudioEngine::sharedEngine()->m_system->playSound(ReleaseSound->m_sound, nullptr, false, &Soundchannel);
             Soundchannel->setVolume(release_vol / 50.f);
+            Soundchannel->setPitch(pitch * (2.0f / 99.0f));
         }
 
         return ret;
