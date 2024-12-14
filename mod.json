@@ -6,7 +6,7 @@
         "mac": "2.2074",
         "ios": "2.2074"
     	},
-	"version": "v1.0.6",
+	"version": "v1.0.8",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developers": ["Beat", "Dwang-ML"],
@@ -15,7 +15,9 @@
 		"files": [
 			"resources/**/*.ogg",
 			"resources/**/*.mp3",
-			"resources/**/*.wav",
+			"resources/**/*.wav"
+		],
+		"sprites": [
 			"resources/**/*.png"
 		]
 	},
