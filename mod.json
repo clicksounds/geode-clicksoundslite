@@ -15,7 +15,9 @@
 		"files": [
 			"resources/**/*.ogg",
 			"resources/**/*.mp3",
-			"resources/**/*.wav",
+			"resources/**/*.wav"
+		],
+		"sprites": [
 			"resources/**/*.png"
 		]
 	},
