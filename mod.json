@@ -114,10 +114,10 @@
 		},
 		"pitch": {
 			"name": "Pitch of the sounds (%)",
-			"description": "Determines the pitch of the click/release sound. Default is 50%, 0% will mute the sound. Because of geode, pitch will also adjust the playback speed for some reason.",
+			"description": "Determines the pitch of the click/release sound. Because of geode, pitch will also adjust the playback speed for some reason.",
 			"type": "int",
 			"default": 50,
-			"min": 0,
+			"min": 1,
 			"max": 100,
 			"control": {
 				"slider": true
