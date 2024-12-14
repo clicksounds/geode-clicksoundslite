@@ -11,8 +11,10 @@ Feel free to contact developers in our [discord server](https://discord.gg/RwbRP
 
 ### General Information
 [![Static Badge](https://img.shields.io/badge/status-in_development-white)]()\
-[![Static Badge](https://img.shields.io/badge/version-v1.0.6-white)]()\
-[![Language](https://img.shields.io/badge/languages-C++,_CMake-white)](https://isocpp.org/)
+[![Static Badge](https://img.shields.io/badge/version-v1.0.8-white)]()\
+[![Language](https://img.shields.io/badge/languages-C++,_CMake-white)](https://isocpp.org/)\
+[![Contributors](https://img.shields.io/github/contributors/clicksounds/geode-clicksoundslite?color=white)](https://github.com/clicksounds/geode-clicksoundslite/graphs/contributors)
+
 
 ### Activity
 
