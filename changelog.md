@@ -18,3 +18,5 @@
 ### 1.0.8
 - Minor fix: Reduced lag on Android.
 - Minor fix: Dual mode no longer plays the release sound twice.
+### 1.0.9
+- Minor fix: Sounds should be more stable on some devices.
