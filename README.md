@@ -2,7 +2,7 @@
 
 ### About
 This is Click Sounds Lite. A mod made to be a lighter version of [Click Sounds](https://github.com/clicksounds/geode-clicksound).
-Lite discludes some features from the full version of Click Sounds, such as the built-in sound library.
+Lite excludes some features from the full version of Click Sounds, such as the built-in sound library.
 
 ### Contact Us
 Feel free to contact developers in our [discord server](https://discord.gg/RwbRP8ADdc) or raise an [issue](https://github.com/clicksounds/geode-clicksoundslite/issues) if there are any bugs. 
@@ -11,8 +11,10 @@ Feel free to contact developers in our [discord server](https://discord.gg/RwbRP
 
 ### General Information
 [![Static Badge](https://img.shields.io/badge/status-in_development-white)]()\
-[![Static Badge](https://img.shields.io/badge/version-v1.0.6-white)]()\
-[![Language](https://img.shields.io/badge/languages-C++,_CMake-white)](https://isocpp.org/)
+[![Static Badge](https://img.shields.io/badge/version-v1.0.9-white)]()\
+[![Language](https://img.shields.io/badge/languages-C++,_CMake-white)](https://isocpp.org/)\
+[![Contributors](https://img.shields.io/github/contributors/clicksounds/geode-clicksoundslite?color=white)](https://github.com/clicksounds/geode-clicksoundslite/graphs/contributors)
+
 
 ### Activity
 
