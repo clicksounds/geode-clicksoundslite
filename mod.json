@@ -23,7 +23,8 @@
 	},
 	"links": {
 		"community": "https://discord.gg/tu98bsGA32",
-		"source": "https://github.com/clicksounds/geode-clicksoundslite"
+		"source": "https://github.com/clicksounds/geode-clicksoundslite",
+		"homepage": "https://clicksounds.github.io/clicks/"
 	},
 	"tags": [
 		"universal",
