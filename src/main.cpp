@@ -3,8 +3,32 @@
 #include <Geode/modify/PauseLayer.hpp>
 #include <Geode/ui/GeodeUI.hpp>
 #include <Geode/loader/SettingV3.hpp>
+#include <Geode/modify/MenuLayer.hpp>
 
 using namespace geode::prelude;
+
+class $modify(MenuLayer){
+    bool init(){
+        MenuLayer::init();
+        if (Mod::get()->getSavedValue<bool>("viewedCSFullPopup")){
+            return true;
+        }
+        auto popup = createQuickPopup(
+        "Click Sounds Lite",
+        "The full version of Click Sounds is now available.\nFind it on the Geode downloads page.",
+        "Never show", "Got it",
+        [this](auto, bool btn2) {
+            if (btn2) {
+                Mod::get()->setSavedValue<bool>("viewedCSFullPopup", false);
+            } else {
+                Mod::get()->setSavedValue<bool>("viewedCSFullPopup", true);
+            }
+        }, false);
+        popup->m_scene = this;
+        popup->show();
+        return true;
+    }
+};
 
 // Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
 class SoundCache {
