@@ -1,6 +1,8 @@
+### 1.0.11
+- Minor fix: Using the show trajectory hack from other mods will no longer cause spam sounds.
 ### 1.0.10
-- Minor fix: A popup for Click Sounds Full will now show on startup (can be muted)
-- Minor fix: Added link to the Click Sounds website
+- Minor fix: A popup for Click Sounds Full will now show on startup (can be muted.)
+- Minor fix: Added link to the Click Sounds website.
 ### 1.0.9
 - Minor fix: Sounds should be more stable on some devices.
 ### 1.0.8
