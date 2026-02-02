@@ -40,6 +40,9 @@ jobs:
         uses: geode-sdk/build-geode-mod@main
         with:
           combine: true
+          build-config: 'Release'
+          export-pdb: true
+          sdk: '1a15747'
           target: ${{ matrix.config.target }}
 
   package:
