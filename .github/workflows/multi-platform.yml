@@ -42,7 +42,7 @@ jobs:
           combine: true
           build-config: 'Release'
           export-pdb: true
-          sdk: '42871f9'
+          sdk: 'nightly'
           target: ${{ matrix.config.target }}
 
   package:
