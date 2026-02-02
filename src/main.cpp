@@ -7,7 +7,7 @@
 
 using namespace geode::prelude;
 
-class $modify(MenuLayer){
+/*class $modify(MenuLayer){
     bool init(){
         MenuLayer::init();
         if (Mod::get()->getSavedValue<bool>("viewedCSFullPopup")){
@@ -28,7 +28,7 @@ class $modify(MenuLayer){
         popup->show();
         return true;
     }
-};
+};*/
 
 // Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
 class SoundCache {
@@ -240,4 +240,5 @@ $execute {
     std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
     ClickSound->Setsound(clickSoundFile);
 }
+
 
