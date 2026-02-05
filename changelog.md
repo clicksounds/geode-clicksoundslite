@@ -1,3 +1,5 @@
+# 2.0.0
+- Added support for Geode v5.0.0
 ### 1.0.11
 - Minor fix: Using the show trajectory hack from other mods will no longer cause spam sounds.
 ### 1.0.10

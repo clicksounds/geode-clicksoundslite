@@ -227,11 +227,11 @@ class $modify(CSLitePauseLayer, PauseLayer) {
 // on the mod loading
 $execute {
     // Does the release-sound path setting change?
-    listenForSettingChanges("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
+    listenForSettingChanges<std::filesystem::path>("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
         ReleaseSound->Setsound(releaseSoundFile.string());
     });
     // Does the click-sound path setting change?
-     listenForSettingChanges("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
+     listenForSettingChanges<std::filesystem::path>("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
         ClickSound->Setsound(PressSoundSoundFile.string());
     });
     // on boot set Sound Caches
