@@ -1,12 +1,12 @@
 {
-	"geode": "5.0.0-beta.1",
+	"geode": "5.0.0-beta.4",
 	"gd": {
         "win": "2.2081",
         "android": "2.2081",
         "mac": "2.2081",
         "ios": "2.2081"
     	},
-	"version": "v2.0.0",
+	"version": "v3.0.0",
 	"id": "beat.click_sounds_lite",
 	"name": "Click Sounds Lite",
 	"developers": ["Beat", "Dwang-ML"],
@@ -34,6 +34,10 @@
 		"customization"
 	],
 	"settings": {
+		"basic-title": {
+			"name": "Basic Settings",
+			"type": "title"
+		},
 		"click-volume": {
 			"name": "Click sounds volume (%)",
 			"type": "int",
@@ -85,6 +89,44 @@
 				 	"description": "Audio file"}
 				]
 			}
+		},
+		"optional-soft-title": {
+			"name": "Soft Sounds (Optional)",
+			"type": "title"
+		},
+		"enable-softsounds": {
+			"name": "Enable Soft Sounds",
+			"type": "bool",
+			"default": false,
+			"description": "Play a different sound when pressing a key quickly."
+		},
+		"custom-softpresssound": {
+			"name": "Soft Click Sound File",
+			"type": "file",
+			"default": "Select a file",
+			"description": "Sound played when pressing a key while already holding it.",
+			"control": {
+				"filters": [
+					{"files": ["*.ogg", "*.mp3", "*.wav"],
+				 	"description": "Audio file"}
+				]
+			}
+		},
+		"custom-softreleasesound": {
+			"name": "Soft Release Sound File",
+			"type": "file",
+			"default": "Select a file",
+			"description": "Sound played when releasing a key while still holding it.",
+			"control": {
+				"filters": [
+					{"files": ["*.ogg", "*.mp3", "*.wav"],
+				 	"description": "Audio file"}
+				]
+			}
+		},
+		"misc-title": {
+			"name": "Miscellaneous",
+			"type": "title"
 		},
 		"only-on-jump": {
 			"name": "Only play on jump",

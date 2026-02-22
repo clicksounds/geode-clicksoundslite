@@ -7,102 +7,82 @@
 
 using namespace geode::prelude;
 
-/*class $modify(MenuLayer){
-    bool init(){
-        MenuLayer::init();
-        if (Mod::get()->getSavedValue<bool>("viewedCSFullPopup")){
-            return true;
-        }
-        auto popup = createQuickPopup(
-        "Click Sounds Lite",
-        "The full version of Click Sounds is now available.\nFind it on the Geode downloads page.",
-        "Never show", "Got it",
-        [this](auto, bool btn2) {
-            if (btn2) {
-                Mod::get()->setSavedValue<bool>("viewedCSFullPopup", false);
-            } else {
-                Mod::get()->setSavedValue<bool>("viewedCSFullPopup", true);
-            }
-        }, false);
-        popup->m_scene = this;
-        popup->show();
-        return true;
-    }
-};*/
-
-// Custom class for Caching sounds (Make it less laggy for mobile platforms and such)
 class SoundCache {
     public:
         std::string m_soundFile;
-        FMOD::Sound* m_sound;
+        FMOD::Sound* m_sound = nullptr;
         SoundCache() {};
 
         void Setsound(std::string soundFile) {
-                if (soundFile.c_str()) {
-                    if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile.c_str(), FMOD_DEFAULT, nullptr, &m_sound) == FMOD_OK) {
-                        m_sound->setMode(FMOD_LOOP_OFF);
-                       m_soundFile = soundFile;
-                    }
-                } 
+            if (!soundFile.empty()) {
+                if (FMODAudioEngine::sharedEngine()->m_system->createSound(soundFile.c_str(), FMOD_DEFAULT, nullptr, &m_sound) == FMOD_OK) {
+                    m_sound->setMode(FMOD_LOOP_OFF);
+                    m_soundFile = soundFile;
+                }
+            } 
         }
 
         ~SoundCache() {
-            if (m_sound) {
-                m_sound->release();
-            }
+            if (m_sound) m_sound->release();
         };
-
 };
 
-// Create the classes for Caching
 static FMOD::Channel* Soundchannel;
 static SoundCache* ClickSound = new SoundCache();
 static SoundCache* ReleaseSound = new SoundCache();
+static SoundCache* SoftClickSound = new SoundCache();
+static SoundCache* SoftReleaseSound = new SoundCache();
 
-// integritycheck copied from cs full, added cs lite 1.0.11
-// the check to see if you should play the sound or not
 bool integrityCheck(PlayerObject* object, PlayerButton Pressed) {
-    // play sounds when "only play on jump" settings is enabled and the player input is a jump, left movement, or right movement.
     if (Mod::get()->getSettingValue<bool>("only-on-jump")) {
-        if (Pressed != PlayerButton::Jump) {
-            return false;
-        }
+        if (Pressed != PlayerButton::Jump) return false;
     }
-    GJGameLevel* Level;
-     if (!PlayLayer::get()) {
-        if (!LevelEditorLayer::get()) {
-            return false;
-        }
-        Level = LevelEditorLayer::get()->m_level;
-     } else {
-        PlayLayer* Pl = PlayLayer::get();
-        // Mac fix
-        if (Pl->m_isPaused) {
-            return false;
-        }
-        Level = Pl->m_level;
-     };
     GJBaseGameLayer* LayerCheck = GJBaseGameLayer::get();
-     if (!LayerCheck) {
-        return false;
-     }
-     if (Level->m_twoPlayerMode && LayerCheck->m_player2 == object || LayerCheck->m_player1 == object) {
-        return true;
-     } else {
-        return false;
-     }
+    if (!LayerCheck) return false;
+
+    if (PlayLayer::get() && PlayLayer::get()->m_isPaused) return false;
+
+    if (LayerCheck->m_player2 == object || LayerCheck->m_player1 == object) return true;
+    return false;
 }
 
-class $modify(PlayerObject) {
+class $modify(CSPlayerObject, PlayerObject) {
 public:
-        // add it to fields to access later but stored in the object (m_fields->Var)
     struct Fields {
          bool directionUp = false;
          bool directionRight = false;
          bool directionLeft = false;
+         
+         // true if previous press was within 0.3s
+         bool m_withinSoftWindow = false; 
+         
+         bool m_isSoftJump = false;
+         bool m_isSoftRight = false;
+         bool m_isSoftLeft = false;
+         
+         CCNode* m_timerNode = nullptr;
     };
+
+    bool init(int p0, int p1, GJBaseGameLayer* p2, CCLayer* p3, bool p4) {
+        if (!PlayerObject::init(p0, p1, p2, p3, p4)) return false;
+        m_fields->m_timerNode = CCNode::create();
+        this->addChild(m_fields->m_timerNode);
+        return true;
+    }
     
-    // For setting bools for setting dir
+    void setButtonSoftState(PlayerButton btn, bool isSoft) {
+        if (btn == PlayerButton::Jump) m_fields->m_isSoftJump = isSoft;
+        else if (btn == PlayerButton::Right) m_fields->m_isSoftRight = isSoft;
+        else if (btn == PlayerButton::Left) m_fields->m_isSoftLeft = isSoft;
+    }
+
+    bool getButtonSoftState(PlayerButton btn) {
+        if (btn == PlayerButton::Jump) return m_fields->m_isSoftJump;
+        if (btn == PlayerButton::Right) return m_fields->m_isSoftRight;
+        if (btn == PlayerButton::Left) return m_fields->m_isSoftLeft;
+        return false;
+    }
+
     void SetupNewDirections(PlayerButton p0, bool Set) { 
         switch (p0) { 
             case PlayerButton::Jump:   m_fields->directionUp = Set; break; 
@@ -111,76 +91,89 @@ public:
             default:break; 
         } 
     }
-    // getting the bools in a orderly way
+
     bool GetNewDirections(PlayerButton p0) { 
         switch (p0) { 
-            case PlayerButton::Jump:   return m_fields->directionUp; break; 
-            case PlayerButton::Right:  return m_fields->directionRight; break; 
-            case PlayerButton::Left:  return m_fields->directionLeft; break; 
+            case PlayerButton::Jump:   return m_fields->directionUp;
+            case PlayerButton::Right:  return m_fields->directionRight;
+            case PlayerButton::Left:   return m_fields->directionLeft;
             default:break; 
         } 
         return false;
     }
-    // click sounds
+
     bool pushButton(PlayerButton p0) {
         bool ret = PlayerObject::pushButton(p0);
-        // check if you can and or check if it is correct
-        if (!integrityCheck(this,p0)) {
-            return ret;
-        };
+        if (!integrityCheck(this, p0)) return ret;
 
-        auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
         auto isClickEnabled = Mod::get()->getSettingValue<bool>("enable-clicksounds");
         auto click_vol = Mod::get()->getSettingValue<int64_t>("click-volume");
-        // set the direction bool to true
-        SetupNewDirections(p0,true);
-        
-        // is it enabled or is volume < 0
         if (click_vol <= 0 || !isClickEnabled) return ret;
-        // should call failsafe if sound isn't the same?
-        if (ClickSound->m_soundFile != clickSoundFile) {
-            ClickSound->Setsound(clickSoundFile);
+
+        SetupNewDirections(p0, true);
+
+        bool useSoft = false;
+        if (Mod::get()->getSettingValue<bool>("enable-softsounds") && m_fields->m_withinSoftWindow) {
+            useSoft = true;
         }
-        // sound player
-        if (ClickSound->m_sound) {
-            FMODAudioEngine::sharedEngine()->m_system->playSound(ClickSound->m_sound, nullptr, false, &Soundchannel);
-           Soundchannel->setVolume(click_vol / 50.f);
+
+        setButtonSoftState(p0, useSoft);
+
+        if (Mod::get()->getSettingValue<bool>("enable-softsounds")) {
+            m_fields->m_withinSoftWindow = true;
+            if (m_fields->m_timerNode) {
+                m_fields->m_timerNode->stopAllActions();
+                auto delay = CCDelayTime::create(0.3f);
+                auto callback = CallFuncExt::create([this]() {
+                    this->m_fields->m_withinSoftWindow = false;
+                });
+                m_fields->m_timerNode->runAction(CCSequence::create(delay, callback, nullptr));
+            }
+        }
+
+        SoundCache* currentCache = useSoft ? SoftClickSound : ClickSound;
+        std::string settingName = useSoft ? "custom-softpresssound" : "custom-presssound";
+        auto clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>(settingName).string();
+
+        if (currentCache->m_soundFile != clickSoundFile) {
+            currentCache->Setsound(clickSoundFile);
+        }
+
+        if (currentCache->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(currentCache->m_sound, nullptr, false, &Soundchannel);
+            Soundchannel->setVolume(click_vol / 50.f);
         }
         return ret;
     }
 
-    // release sounds
     bool releaseButton(PlayerButton p0) {
         bool ret = PlayerObject::releaseButton(p0);
-        // Did you click? check
-        if (!GetNewDirections(p0)) {
-            return ret;
-        };
-        // check if you can and or check if it is correct
-         if (!integrityCheck(this,p0)) {
-            return ret;
-        };
+        if (!GetNewDirections(p0) || !integrityCheck(this, p0)) return ret;
 
-        auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
         auto isReleaseEnabled = Mod::get()->getSettingValue<bool>("enable-releasesounds");
         auto release_vol = Mod::get()->getSettingValue<int64_t>("release-volume");
-        // set the direction bool to false
-        SetupNewDirections(p0,false);
-        // is it enabled or is volume < 0
         if (release_vol <= 0 || !isReleaseEnabled) return ret;
-        // should call failsafe if sound isn't the same?
-        if (ReleaseSound->m_soundFile != releaseSoundFile) {
-            ReleaseSound->Setsound(releaseSoundFile);
+
+        bool useSoft = getButtonSoftState(p0);
+        SetupNewDirections(p0, false);
+
+        SoundCache* currentCache = useSoft ? SoftReleaseSound : ReleaseSound;
+        std::string settingName = useSoft ? "custom-softreleasesound" : "custom-releasesound";
+        auto releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>(settingName).string();
+
+        if (currentCache->m_soundFile != releaseSoundFile) {
+            currentCache->Setsound(releaseSoundFile);
         }
-        // sound player
-        if (ReleaseSound->m_sound) {
-            FMODAudioEngine::sharedEngine()->m_system->playSound(ReleaseSound->m_sound, nullptr, false, &Soundchannel);
+
+        if (currentCache->m_sound) {
+            FMODAudioEngine::sharedEngine()->m_system->playSound(currentCache->m_sound, nullptr, false, &Soundchannel);
             Soundchannel->setVolume(release_vol / 50.f);
         }
 
         return ret;
     }
 };
+
 
 // Create settings button in the pause menu if enabled in settings
 class $modify(CSLitePauseLayer, PauseLayer) {
@@ -226,19 +219,18 @@ class $modify(CSLitePauseLayer, PauseLayer) {
 
 // on the mod loading
 $execute {
-    // Does the release-sound path setting change?
-    listenForSettingChanges<std::filesystem::path>("custom-releasesound", [](std::filesystem::path releaseSoundFile) {
-        ReleaseSound->Setsound(releaseSoundFile.string());
-    });
-    // Does the click-sound path setting change?
-     listenForSettingChanges<std::filesystem::path>("custom-presssound", [](std::filesystem::path PressSoundSoundFile) {
-        ClickSound->Setsound(PressSoundSoundFile.string());
-    });
-    // on boot set Sound Caches
-    std::string releaseSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-releasesound").string();
-    ReleaseSound->Setsound(releaseSoundFile);
-    std::string clickSoundFile = Mod::get()->getSettingValue<std::filesystem::path>("custom-presssound").string();
-    ClickSound->Setsound(clickSoundFile);
+    auto loadSound = [](std::string setting, SoundCache* cache) {
+        std::string path = Mod::get()->getSettingValue<std::filesystem::path>(setting).string();
+        cache->Setsound(path);
+    };
+
+    loadSound("custom-presssound", ClickSound);
+    loadSound("custom-releasesound", ReleaseSound);
+    loadSound("custom-softpresssound", SoftClickSound);
+    loadSound("custom-softreleasesound", SoftReleaseSound);
+
+    listenForSettingChanges<std::filesystem::path>("custom-presssound", [](std::filesystem::path p) { ClickSound->Setsound(p.string()); });
+    listenForSettingChanges<std::filesystem::path>("custom-releasesound", [](std::filesystem::path p) { ReleaseSound->Setsound(p.string()); });
+    listenForSettingChanges<std::filesystem::path>("custom-softpresssound", [](std::filesystem::path p) { SoftClickSound->Setsound(p.string()); });
+    listenForSettingChanges<std::filesystem::path>("custom-softreleasesound", [](std::filesystem::path p) { SoftReleaseSound->Setsound(p.string()); });
 }
-
-
